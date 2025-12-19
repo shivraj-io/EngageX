@@ -1,21 +1,29 @@
 .clients {
-  padding: var(--spacing-3xl) 0;
+  padding: 5rem 0;
   background-color: var(--bg-primary);
 }
 
 .clients-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: var(--spacing-xl);
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.empty-message {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  grid-column: 1 / -1;
 }
 
 @media (max-width: 768px) {
   .clients {
-    padding: var(--spacing-2xl) 0;
+    padding: 3rem 0;
   }
 
   .clients-grid {
     grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
+    gap: 1rem;
   }
 }

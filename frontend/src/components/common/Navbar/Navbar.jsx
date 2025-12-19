@@ -19,7 +19,7 @@ const Navbar = () => {
         <div className="container">
           <div className="navbar-content">
             <Link to="/admin/dashboard" className="navbar-brand">
-              Projectora Admin
+              EngageX Admin
             </Link>
             <div className="navbar-menu">
               <Link
@@ -69,7 +69,7 @@ const Navbar = () => {
       <div className="container">
         <div className="navbar-content">
           <Link to="/" className="navbar-brand">
-            Projectora
+            EngageX
           </Link>
           <div className="navbar-menu">
             <a href="#projects" className="navbar-link">

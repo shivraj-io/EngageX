@@ -1,74 +1,68 @@
 .newsletter {
-  padding: var(--spacing-3xl) 0;
-  background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+  padding: 4rem 0;
+  background-color: var(--primary-color);
   color: white;
 }
 
 .newsletter-content {
-  max-width: 800px;
+  max-width: 500px;
   margin: 0 auto;
   text-align: center;
 }
 
 .newsletter-title {
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
-  margin-bottom: var(--spacing-md);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
 }
 
 .newsletter-description {
-  font-size: var(--font-size-lg);
-  margin-bottom: var(--spacing-2xl);
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1.5rem;
 }
 
 .newsletter-form {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.newsletter-input-group {
   display: flex;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-md);
+  gap: 0.75rem;
 }
 
-.newsletter-input {
+.newsletter-form .form-input {
   flex: 1;
-  padding: var(--spacing-md);
+  background-color: white;
   border: none;
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-base);
+  padding: 0.875rem 1rem;
 }
 
-.newsletter-input:focus {
-  outline: none;
+.newsletter-form .form-input:focus {
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
-.newsletter-input-group .btn {
-  padding: var(--spacing-md) var(--spacing-xl);
+.newsletter-form .btn {
   white-space: nowrap;
+  background-color: var(--text-primary);
+  color: white;
+}
+
+.newsletter-form .btn:hover {
+  background-color: #0f172a;
+}
+
+.newsletter .alert {
+  margin-top: 1rem;
+  text-align: left;
 }
 
 @media (max-width: 768px) {
   .newsletter {
-    padding: var(--spacing-2xl) 0;
+    padding: 3rem 0;
   }
 
-  .newsletter-title {
-    font-size: var(--font-size-2xl);
-  }
-
-  .newsletter-description {
-    font-size: var(--font-size-base);
-  }
-
-  .newsletter-input-group {
+  .newsletter-form {
     flex-direction: column;
   }
 
-  .newsletter-input-group .btn {
+  .newsletter-form .btn {
     width: 100%;
   }
 }

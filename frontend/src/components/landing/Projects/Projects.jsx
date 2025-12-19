@@ -25,9 +25,9 @@ const Projects = () => {
     <section className="projects" id="projects">
       <div className="container">
         <div className="section-header">
-          <h2 className="section-title">Our Projects</h2>
-          <p className="section-description">
-            Explore our portfolio of successful projects delivered to clients worldwide
+          <h2 className="section-title">Featured Projects</h2>
+          <p className="section-subtitle">
+            Real work we've delivered for our clients
           </p>
         </div>
 

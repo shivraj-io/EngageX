@@ -1,14 +1,15 @@
 .navbar {
   background-color: var(--bg-primary);
-  box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: var(--spacing-md) 0;
+  padding: 1rem 0;
 }
 
 .navbar-admin {
   background-color: var(--primary-color);
+  border-bottom: none;
 }
 
 .navbar-admin .navbar-brand,
@@ -23,67 +24,71 @@
 }
 
 .navbar-brand {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
+  font-size: 1.5rem;
+  font-weight: 700;
   color: var(--primary-color);
-  transition: color var(--transition-fast);
+  text-decoration: none;
+  letter-spacing: -0.5px;
 }
 
-.navbar-brand:hover {
-  color: var(--primary-dark);
+.navbar-admin .navbar-brand {
+  color: white;
 }
 
 .navbar-menu {
   display: flex;
   align-items: center;
-  gap: var(--spacing-lg);
+  gap: 2rem;
 }
 
 .navbar-link {
-  color: var(--text-primary);
-  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
   transition: color var(--transition-fast);
-  position: relative;
 }
 
 .navbar-link:hover {
   color: var(--primary-color);
 }
 
+.navbar-admin .navbar-link:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .navbar-link.active {
   color: white;
 }
 
-.navbar-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: white;
-}
-
 .navbar-logout {
+  background-color: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
   color: white;
-  border-color: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
 }
 
 .navbar-logout:hover {
   background-color: white;
   color: var(--primary-color);
+  border-color: white;
 }
 
 @media (max-width: 768px) {
+  .navbar {
+    padding: 0.875rem 0;
+  }
+
   .navbar-menu {
-    gap: var(--spacing-sm);
+    gap: 1rem;
   }
 
   .navbar-link {
-    font-size: var(--font-size-sm);
+    font-size: 0.875rem;
   }
 
   .navbar-brand {
-    font-size: var(--font-size-xl);
+    font-size: 1.25rem;
   }
 }

@@ -25,9 +25,9 @@ const Clients = () => {
     <section className="clients" id="clients">
       <div className="container">
         <div className="section-header">
-          <h2 className="section-title">Our Clients</h2>
-          <p className="section-description">
-            Trusted by leading companies and organizations worldwide
+          <h2 className="section-title">Trusted by Great Teams</h2>
+          <p className="section-subtitle">
+            Companies we've partnered with
           </p>
         </div>
 

@@ -30,34 +30,32 @@ const Newsletter = () => {
     <section className="newsletter">
       <div className="container">
         <div className="newsletter-content">
-          <h2 className="newsletter-title">Subscribe to Our Newsletter</h2>
+          <h2 className="newsletter-title">Stay in the loop</h2>
           <p className="newsletter-description">
-            Stay updated with our latest projects, insights, and industry news
+            Get updates on new projects and insights delivered to your inbox.
           </p>
 
           <form onSubmit={handleSubmit} className="newsletter-form">
-            <div className="newsletter-input-group">
-              <input
-                type="email"
-                className="newsletter-input"
-                placeholder="Enter your email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <button type="submit" className="btn btn-primary" disabled={loading}>
-                {loading ? 'Subscribing...' : 'Subscribe'}
-              </button>
-            </div>
-
-            {success && (
-              <div className="alert alert-success">
-                Successfully subscribed to our newsletter!
-              </div>
-            )}
-            
-            {error && <div className="alert alert-error">{error}</div>}
+            <input
+              type="email"
+              className="form-input"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <button type="submit" className="btn" disabled={loading}>
+              {loading ? 'Subscribing...' : 'Subscribe'}
+            </button>
           </form>
+
+          {success && (
+            <div className="alert alert-success">
+              You're subscribed! Thanks for joining.
+            </div>
+          )}
+          
+          {error && <div className="alert alert-error">{error}</div>}
         </div>
       </div>
     </section>
