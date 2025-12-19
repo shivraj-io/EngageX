@@ -7,11 +7,10 @@ const { generateToken } = require('../services/auth.service');
 
 /**
  * @desc    Admin login
- * @route   POST /api/auth/login
+ * @route   POST /api/admin/login
  * @access  Public
  */
 const login = asyncHandler(async (req, res) => {
-  // Check validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return errorResponse(
@@ -22,10 +21,9 @@ const login = asyncHandler(async (req, res) => {
     );
   }
 
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  // Find admin with password field
-  const admin = await Admin.findOne({ username }).select('+password');
+  const admin = await Admin.findOne({ email }).select('+password');
 
   if (!admin) {
     return errorResponse(
@@ -35,7 +33,6 @@ const login = asyncHandler(async (req, res) => {
     );
   }
 
-  // Check if admin is active
   if (!admin.isActive) {
     return errorResponse(
       res,
@@ -44,7 +41,6 @@ const login = asyncHandler(async (req, res) => {
     );
   }
 
-  // Verify password
   const isPasswordValid = await admin.comparePassword(password);
 
   if (!isPasswordValid) {
@@ -55,10 +51,8 @@ const login = asyncHandler(async (req, res) => {
     );
   }
 
-  // Generate JWT token
   const token = generateToken(admin._id);
 
-  // Send response
   successResponse(
     res,
     {

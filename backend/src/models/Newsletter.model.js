@@ -25,8 +25,7 @@ const newsletterSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Index for email lookup and status filtering
-newsletterSchema.index({ email: 1 });
+// Index for status filtering only (email index handled by unique constraint)
 newsletterSchema.index({ status: 1, subscribedAt: -1 });
 
 module.exports = mongoose.model('Newsletter', newsletterSchema);

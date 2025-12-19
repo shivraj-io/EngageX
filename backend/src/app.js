@@ -34,9 +34,10 @@ app.get('/health', (req, res) => {
 
 // API routes
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/clients', clientRoutes);
-app.use('/api/contact', contactRoutes);
+app.use('/api/contacts', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 
 // 404 handler

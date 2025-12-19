@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           const response = await verifyToken();
-          setUser(response.data.user);
+          setUser(response.data.admin);
         } catch (error) {
           localStorage.removeItem('authToken');
           setUser(null);

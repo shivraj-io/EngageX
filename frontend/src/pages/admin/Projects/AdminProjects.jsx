@@ -12,18 +12,28 @@ const AdminProjects = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    client: '',
-    technology: '',
-    status: 'Planning',
-    completionDate: '',
+    category: '',
+    technologies: '',
+    liveUrl: '',
+    githubUrl: '',
+    status: 'active',
+    featured: false,
   });
+  const [imageFile, setImageFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: type === 'checkbox' ? checked : value,
     });
+  };
+
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -31,14 +41,35 @@ const AdminProjects = () => {
     setSubmitting(true);
 
     try {
+      const submitData = new FormData();
+      submitData.append('title', formData.title);
+      submitData.append('description', formData.description);
+      submitData.append('category', formData.category);
+      submitData.append('status', formData.status);
+      submitData.append('featured', formData.featured);
+      
+      if (formData.liveUrl) submitData.append('liveUrl', formData.liveUrl);
+      if (formData.githubUrl) submitData.append('githubUrl', formData.githubUrl);
+      
+      // Convert comma-separated technologies to array
+      if (formData.technologies) {
+        const techArray = formData.technologies.split(',').map(t => t.trim()).filter(t => t);
+        techArray.forEach(tech => submitData.append('technologies[]', tech));
+      }
+      
+      if (imageFile) {
+        submitData.append('image', imageFile);
+      }
+
       if (editingProject) {
-        await updateProject(editingProject._id, formData);
+        await updateProject(editingProject._id, submitData);
       } else {
-        await createProject(formData);
+        await createProject(submitData);
       }
       refetch();
       closeModal();
     } catch (err) {
+      console.error('Error:', err);
       alert(err.response?.data?.message || 'Failed to save project');
     } finally {
       setSubmitting(false);
@@ -50,11 +81,14 @@ const AdminProjects = () => {
     setFormData({
       title: project.title,
       description: project.description,
-      client: project.client,
-      technology: project.technology,
+      category: project.category || '',
+      technologies: project.technologies ? project.technologies.join(', ') : '',
+      liveUrl: project.liveUrl || '',
+      githubUrl: project.githubUrl || '',
       status: project.status,
-      completionDate: project.completionDate ? project.completionDate.split('T')[0] : '',
+      featured: project.featured || false,
     });
+    setImageFile(null);
     setShowModal(true);
   };
 
@@ -74,11 +108,14 @@ const AdminProjects = () => {
     setFormData({
       title: '',
       description: '',
-      client: '',
-      technology: '',
-      status: 'Planning',
-      completionDate: '',
+      category: '',
+      technologies: '',
+      liveUrl: '',
+      githubUrl: '',
+      status: 'active',
+      featured: false,
     });
+    setImageFile(null);
     setShowModal(true);
   };
 
@@ -116,9 +153,10 @@ const AdminProjects = () => {
                 <thead>
                   <tr>
                     <th>Title</th>
-                    <th>Client</th>
-                    <th>Technology</th>
+                    <th>Category</th>
+                    <th>Technologies</th>
                     <th>Status</th>
+                    <th>Featured</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -126,13 +164,14 @@ const AdminProjects = () => {
                   {projects.map((project) => (
                     <tr key={project._id}>
                       <td>{project.title}</td>
-                      <td>{project.client}</td>
-                      <td>{project.technology}</td>
+                      <td>{project.category}</td>
+                      <td>{project.technologies?.join(', ')}</td>
                       <td>
                         <span className={`status-badge status-${project.status.toLowerCase()}`}>
                           {project.status}
                         </span>
                       </td>
+                      <td>{project.featured ? '⭐' : '-'}</td>
                       <td>
                         <div className="action-buttons">
                           <button
@@ -182,6 +221,7 @@ const AdminProjects = () => {
                   className="form-input"
                   value={formData.title}
                   onChange={handleChange}
+                  placeholder="Enter project title"
                   required
                 />
               </div>
@@ -196,38 +236,85 @@ const AdminProjects = () => {
                   className="form-textarea"
                   value={formData.description}
                   onChange={handleChange}
+                  placeholder="Enter project description"
                   required
                   rows="4"
                 ></textarea>
               </div>
 
               <div className="form-group">
-                <label htmlFor="client" className="form-label">
-                  Client *
+                <label htmlFor="image" className="form-label">
+                  Project Image {!editingProject && '*'}
+                </label>
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  className="form-input"
+                  onChange={handleImageChange}
+                  accept="image/*"
+                  required={!editingProject}
+                />
+                {editingProject && <small style={{ color: '#6b7280' }}>Leave empty to keep current image</small>}
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="category" className="form-label">
+                  Category
                 </label>
                 <input
                   type="text"
-                  id="client"
-                  name="client"
+                  id="category"
+                  name="category"
                   className="form-input"
-                  value={formData.client}
+                  value={formData.category}
                   onChange={handleChange}
-                  required
+                  placeholder="e.g., Web App, Mobile App"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="technology" className="form-label">
-                  Technology *
+                <label htmlFor="technologies" className="form-label">
+                  Technologies
                 </label>
                 <input
                   type="text"
-                  id="technology"
-                  name="technology"
+                  id="technologies"
+                  name="technologies"
                   className="form-input"
-                  value={formData.technology}
+                  value={formData.technologies}
                   onChange={handleChange}
-                  required
+                  placeholder="e.g., React, Node.js, MongoDB (comma-separated)"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="liveUrl" className="form-label">
+                  Live URL
+                </label>
+                <input
+                  type="url"
+                  id="liveUrl"
+                  name="liveUrl"
+                  className="form-input"
+                  value={formData.liveUrl}
+                  onChange={handleChange}
+                  placeholder="https://example.com"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="githubUrl" className="form-label">
+                  GitHub URL
+                </label>
+                <input
+                  type="url"
+                  id="githubUrl"
+                  name="githubUrl"
+                  className="form-input"
+                  value={formData.githubUrl}
+                  onChange={handleChange}
+                  placeholder="https://github.com/username/repo"
                 />
               </div>
 
@@ -243,24 +330,23 @@ const AdminProjects = () => {
                   onChange={handleChange}
                   required
                 >
-                  <option value="Planning">Planning</option>
-                  <option value="In Progress">In Progress</option>
-                  <option value="Completed">Completed</option>
+                  <option value="active">Active</option>
+                  <option value="draft">Draft</option>
+                  <option value="archived">Archived</option>
                 </select>
               </div>
 
               <div className="form-group">
-                <label htmlFor="completionDate" className="form-label">
-                  Completion Date
+                <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    name="featured"
+                    checked={formData.featured}
+                    onChange={handleChange}
+                    style={{ width: 'auto', cursor: 'pointer' }}
+                  />
+                  Featured Project
                 </label>
-                <input
-                  type="date"
-                  id="completionDate"
-                  name="completionDate"
-                  className="form-input"
-                  value={formData.completionDate}
-                  onChange={handleChange}
-                />
               </div>
 
               <div className="modal-actions">

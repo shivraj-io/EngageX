@@ -2,11 +2,11 @@ import axiosInstance from './axiosInstance';
 
 // Auth endpoints
 export const login = (credentials) => {
-  return axiosInstance.post('/auth/login', credentials);
+  return axiosInstance.post('/admin/login', credentials);
 };
 
 export const verifyToken = () => {
-  return axiosInstance.get('/auth/verify');
+  return axiosInstance.get('/auth/me');
 };
 
 // Project endpoints

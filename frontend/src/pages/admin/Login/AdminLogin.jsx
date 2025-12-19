@@ -28,10 +28,17 @@ const AdminLogin = () => {
 
     try {
       const response = await login(credentials);
-      const { token, user } = response.data;
-      loginUser(user, token);
+      console.log('Login response:', response);
+      console.log('Response data:', response.data);
+      
+      // Backend returns data inside a 'data' property
+      const { token, admin } = response.data.data;
+      console.log('Token:', token);
+      console.log('Admin:', admin);
+      loginUser(admin, token);
       navigate('/admin/dashboard');
     } catch (err) {
+      console.error('Login error:', err);
       setError(err.response?.data?.message || 'Invalid credentials');
     } finally {
       setLoading(false);
@@ -59,7 +66,7 @@ const AdminLogin = () => {
               id="email"
               name="email"
               className="form-input"
-              placeholder="admin@example.com"
+              placeholder="admin@engagex.com"
               value={credentials.email}
               onChange={handleChange}
               required

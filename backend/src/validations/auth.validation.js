@@ -1,12 +1,12 @@
 const { body } = require('express-validator');
 
 const loginValidation = [
-  body('username')
+  body('email')
     .trim()
     .notEmpty()
-    .withMessage('Username is required')
-    .isLength({ min: 3 })
-    .withMessage('Username must be at least 3 characters'),
+    .withMessage('Email is required')
+    .isEmail()
+    .withMessage('Please provide a valid email'),
   
   body('password')
     .notEmpty()

@@ -10,7 +10,12 @@ const config = {
   
   jwt: {
     secret: process.env.JWT_SECRET || 'fallback_secret_key',
-    expire: process.env.JWT_EXPIRE || '7d'
+    expire: process.env.JWT_EXPIRE || '1d'
+  },
+  
+  admin: {
+    email: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASSWORD
   },
   
   imagekit: {
