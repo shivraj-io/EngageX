@@ -5,10 +5,10 @@ import Loader from '../../../components/common/Loader/Loader';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const { data: projectsData, loading: projectsLoading } = useFetch(getProjects);
-  const { data: clientsData, loading: clientsLoading } = useFetch(getClients);
-  const { data: contactsData, loading: contactsLoading } = useFetch(getContacts);
-  const { data: subscribersData, loading: subscribersLoading } = useFetch(getSubscribers);
+  const { data: projects, loading: projectsLoading } = useFetch(getProjects);
+  const { data: clients, loading: clientsLoading } = useFetch(getClients);
+  const { data: contacts, loading: contactsLoading } = useFetch(getContacts);
+  const { data: subscribers, loading: subscribersLoading } = useFetch(getSubscribers);
 
   const loading = projectsLoading || clientsLoading || contactsLoading || subscribersLoading;
 
@@ -20,12 +20,6 @@ const Dashboard = () => {
       </>
     );
   }
-
-  // Extract arrays from response data - backend returns data in data.projects, data.clients, etc.
-  const projects = projectsData?.data?.projects || projectsData?.projects || [];
-  const clients = clientsData?.data?.clients || clientsData?.clients || [];
-  const contacts = contactsData?.data?.contacts || contactsData?.contacts || [];
-  const subscribers = subscribersData?.data?.subscribers || subscribersData?.subscribers || [];
 
   const stats = [
     {
@@ -75,21 +69,12 @@ const Dashboard = () => {
 
           <div className="dashboard-sections">
             <div className="dashboard-section">
-              <h2 className="section-title">Recent Projects ({projects?.length || 0})</h2>
+              <h2 className="section-title">Recent Projects</h2>
               {projects && projects.length > 0 ? (
                 <div className="items-list">
                   {projects.slice(0, 5).map((project) => (
                     <div key={project._id} className="item-row">
-                      <div className="item-main">
-                        <span className="item-name">{project.title}</span>
-                        <span className="item-detail">{project.category || 'General'}</span>
-                        {project.technologies && project.technologies.length > 0 && (
-                          <span className="item-detail">
-                            {project.technologies.slice(0, 3).join(', ')}
-                            {project.technologies.length > 3 && '...'}
-                          </span>
-                        )}
-                      </div>
+                      <span className="item-name">{project.title}</span>
                       <span className={`item-badge badge-${project.status.toLowerCase()}`}>
                         {project.status}
                       </span>
@@ -102,24 +87,13 @@ const Dashboard = () => {
             </div>
 
             <div className="dashboard-section">
-              <h2 className="section-title">Recent Clients ({clients?.length || 0})</h2>
+              <h2 className="section-title">Recent Clients</h2>
               {clients && clients.length > 0 ? (
                 <div className="items-list">
                   {clients.slice(0, 5).map((client) => (
                     <div key={client._id} className="item-row">
-                      <div className="item-main">
-                        <span className="item-name">{client.name}</span>
-                        <span className="item-detail">
-                          {client.position && client.company 
-                            ? `${client.position} at ${client.company}`
-                            : client.company || client.position || 'No company info'}
-                        </span>
-                        {client.rating && (
-                          <span className="item-detail">
-                            {'⭐'.repeat(client.rating)} ({client.rating}/5)
-                          </span>
-                        )}
-                      </div>
+                      <span className="item-name">{client.name}</span>
+                      <span className="item-detail">{client.company}</span>
                     </div>
                   ))}
                 </div>

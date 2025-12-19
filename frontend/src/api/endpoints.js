@@ -66,13 +66,13 @@ export const deleteContact = (id) => {
 
 // Newsletter endpoints
 export const subscribeNewsletter = (email) => {
-  return axiosInstance.post('/newsletter', { email });
+  return axiosInstance.post('/newsletter/subscribe', { email });
 };
 
 export const getSubscribers = () => {
-  return axiosInstance.get('/newsletter');
+  return axiosInstance.get('/newsletter/subscribers');
 };
 
 export const deleteSubscriber = (id) => {
-  return axiosInstance.delete(`/newsletter/${id}/permanent`);
+  return axiosInstance.delete(`/newsletter/subscribers/${id}`);
 };
