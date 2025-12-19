@@ -1,29 +1,40 @@
 .clients {
-  padding: 5rem 0;
+  padding: 4rem 0;
   background-color: var(--bg-primary);
 }
 
 .clients-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
 }
 
 .empty-message {
   text-align: center;
-  padding: 3rem;
+  padding: 2.5rem;
   color: var(--text-secondary);
-  font-size: 1rem;
+  font-size: 0.9375rem;
   grid-column: 1 / -1;
 }
 
 @media (max-width: 768px) {
   .clients {
-    padding: 3rem 0;
+    padding: 2.5rem 0;
   }
 
   .clients-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  .empty-message {
+    padding: 2rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .clients {
+    padding: 2rem 0;
   }
 }

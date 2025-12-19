@@ -1,78 +1,69 @@
-.subscribers-page {
-  min-height: 100vh;
+.admin-page {
+  padding: 2rem 0;
   background-color: var(--bg-secondary);
-}
-
-.admin-main {
-  padding: var(--spacing-2xl) 0;
+  min-height: calc(100vh - 65px);
 }
 
 .admin-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .admin-title {
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
+  font-size: 1.5rem;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
-.subscriber-count {
-  background-color: var(--primary-color);
-  color: white;
-  padding: var(--spacing-sm) var(--spacing-lg);
-  border-radius: var(--radius-full);
-  font-weight: var(--font-weight-semibold);
-}
-
-.table-container {
+.admin-content {
   background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
 }
 
-.btn-action {
-  padding: var(--spacing-xs) var(--spacing-md);
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  transition: all var(--transition-fast);
-}
-
-.btn-delete {
-  background-color: var(--error-color);
-  color: white;
-}
-
-.btn-delete:hover {
-  background-color: #dc2626;
-}
-
-.empty-message {
-  text-align: center;
-  font-size: var(--font-size-lg);
+/* Subscriber list */
+.subscriber-count {
+  font-size: 0.875rem;
   color: var(--text-secondary);
-  padding: var(--spacing-3xl) 0;
-  background-color: var(--bg-primary);
-  border-radius: var(--radius-lg);
+  font-weight: 400;
 }
 
 @media (max-width: 768px) {
+  .admin-page {
+    padding: 1.25rem 0;
+  }
+
   .admin-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--spacing-md);
+    gap: 0.875rem;
+    margin-bottom: 1.25rem;
   }
 
-  .table-container {
-    overflow-x: auto;
+  .admin-title {
+    font-size: 1.25rem;
   }
 
-  .table {
-    min-width: 500px;
+  .admin-content {
+    border-radius: var(--radius-md);
+  }
+
+  .subscriber-count {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-page {
+    padding: 1rem 0;
+  }
+
+  .admin-title {
+    font-size: 1.125rem;
   }
 }

@@ -64,6 +64,30 @@
 
 @media (max-width: 768px) {
   .client-card {
-    padding: 1.25rem;
+    padding: 1.125rem;
+  }
+
+  .client-logo,
+  .client-logo-placeholder {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 0.875rem;
+  }
+
+  .client-logo-placeholder {
+    font-size: 1.25rem;
+  }
+
+  .client-name {
+    font-size: 0.9375rem;
+  }
+
+  .client-industry {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .client-description {
+    font-size: 0.8rem;
   }
 }

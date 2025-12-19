@@ -2,12 +2,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 4rem 0;
+  padding: 3rem 0;
 }
 
 .loader {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border: 3px solid var(--border-color);
   border-top-color: var(--primary-color);
   border-radius: 50%;
@@ -28,4 +28,16 @@
   bottom: 0;
   background-color: var(--bg-primary);
   z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .loader-container {
+    padding: 2rem 0;
+  }
+
+  .loader {
+    width: 28px;
+    height: 28px;
+    border-width: 2.5px;
+  }
 }

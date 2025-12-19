@@ -1,8 +1,8 @@
-# Projectora - Full-stack Project & Client Management Platform
+# EngageX - Project & Client Management Platform
 
-A production-ready React frontend built with Vite for managing projects and clients efficiently.
+A clean, modern React frontend for managing projects and clients.
 
-## 🚀 Tech Stack
+## Tech Stack
 
 - **React 18** - UI library
 - **Vite** - Build tool and dev server
@@ -10,7 +10,7 @@ A production-ready React frontend built with Vite for managing projects and clie
 - **Axios** - HTTP client for API calls
 - **Plain CSS** - No UI libraries, custom styling
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/

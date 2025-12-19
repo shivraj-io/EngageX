@@ -51,21 +51,18 @@ const Dashboard = () => {
   return (
     <div className="dashboard-page">
       <Navbar />
-      <main className="dashboard-main">
+      <main className="dashboard">
         <div className="container">
           <div className="dashboard-header">
             <h1 className="dashboard-title">Dashboard</h1>
-            <p className="dashboard-subtitle">Welcome to Projectora Admin Panel</p>
+            <p className="dashboard-subtitle">Welcome to EngageX Admin Panel</p>
           </div>
 
-          <div className="stats-grid">
+          <div className="dashboard-stats">
             {stats.map((stat, index) => (
-              <div key={index} className={`stat-card stat-${stat.color}`}>
-                <div className="stat-icon">{stat.icon}</div>
-                <div className="stat-content">
-                  <p className="stat-title">{stat.title}</p>
-                  <p className="stat-value">{stat.value}</p>
-                </div>
+              <div key={index} className="stat-card">
+                <p className="stat-label">{stat.title}</p>
+                <p className="stat-value">{stat.value}</p>
               </div>
             ))}
           </div>

@@ -1,120 +1,131 @@
-.contact-list-page {
-  min-height: 100vh;
+.admin-page {
+  padding: 2rem 0;
   background-color: var(--bg-secondary);
-}
-
-.admin-main {
-  padding: var(--spacing-2xl) 0;
+  min-height: calc(100vh - 65px);
 }
 
 .admin-header {
-  margin-bottom: var(--spacing-2xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .admin-title {
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
+  font-size: 1.5rem;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
-.contacts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: var(--spacing-xl);
-}
-
-.contact-card {
+.admin-content {
   background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  padding: var(--spacing-xl);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
+  overflow: hidden;
 }
 
-.contact-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding-bottom: var(--spacing-md);
+/* Contact Details */
+.contact-detail {
+  padding: 1.5rem;
   border-bottom: 1px solid var(--border-color);
 }
 
-.contact-info {
-  flex: 1;
+.contact-detail:last-child {
+  border-bottom: none;
 }
 
-.contact-name {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-xs);
-}
-
-.contact-email {
-  color: var(--text-secondary);
-  font-size: var(--font-size-sm);
-}
-
-.btn-icon {
-  padding: var(--spacing-sm);
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: var(--font-size-xl);
-  transition: transform var(--transition-fast);
-}
-
-.btn-icon:hover {
-  transform: scale(1.1);
-}
-
-.contact-card-body {
+.contact-detail-header {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
 }
 
 .contact-subject {
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--text-primary);
-  font-size: var(--font-size-base);
+}
+
+.contact-meta {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
 }
 
 .contact-message {
+  font-size: 0.9375rem;
   color: var(--text-secondary);
-  font-size: var(--font-size-base);
   line-height: 1.6;
-}
-
-.contact-message p {
-  margin-top: var(--spacing-sm);
-  white-space: pre-wrap;
-}
-
-.contact-card-footer {
-  padding-top: var(--spacing-md);
-  border-top: 1px solid var(--border-color);
-  display: flex;
-  justify-content: flex-end;
+  background-color: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: var(--radius-md);
 }
 
 .contact-date {
+  font-size: 0.8125rem;
   color: var(--text-light);
-  font-size: var(--font-size-sm);
-}
-
-.empty-message {
-  text-align: center;
-  font-size: var(--font-size-lg);
-  color: var(--text-secondary);
-  padding: var(--spacing-3xl) 0;
-  background-color: var(--bg-primary);
-  border-radius: var(--radius-lg);
 }
 
 @media (max-width: 768px) {
-  .contacts-grid {
-    grid-template-columns: 1fr;
+  .admin-page {
+    padding: 1.25rem 0;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.875rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .admin-title {
+    font-size: 1.25rem;
+  }
+
+  .admin-content {
+    border-radius: var(--radius-md);
+  }
+
+  .contact-detail {
+    padding: 1.125rem;
+  }
+
+  .contact-detail-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .contact-subject {
+    font-size: 0.9375rem;
+  }
+
+  .contact-meta {
+    font-size: 0.8rem;
+  }
+
+  .contact-message {
+    font-size: 0.875rem;
+    padding: 0.875rem;
+  }
+
+  .contact-date {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-page {
+    padding: 1rem 0;
+  }
+
+  .admin-title {
+    font-size: 1.125rem;
+  }
+
+  .contact-detail {
+    padding: 1rem;
   }
 }

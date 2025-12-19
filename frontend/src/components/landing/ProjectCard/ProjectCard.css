@@ -93,10 +93,36 @@
 
 @media (max-width: 768px) {
   .project-card {
-    padding: 1.25rem;
+    padding: 1.125rem;
   }
 
   .project-card-title {
-    font-size: 1rem;
+    font-size: 0.9375rem;
+  }
+
+  .project-card-status {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  .project-card-description {
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-card-meta {
+    gap: 0.375rem;
+    padding-top: 0.875rem;
+  }
+
+  .project-card-meta-item {
+    font-size: 0.8rem;
+  }
+
+  .tech-tag {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
   }
 }
+  
+
