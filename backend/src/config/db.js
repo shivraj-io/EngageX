@@ -3,7 +3,15 @@ const config = require('./env');
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(config.mongoUri);
+    // Check if already connected (for serverless caching)
+    if (mongoose.connection.readyState >= 1) {
+      return mongoose.connection;
+    }
+
+    const conn = await mongoose.connect(config.mongoUri, {
+      serverSelectionTimeoutMS: 5000, // Timeout after 5s
+      socketTimeoutMS: 45000, // Close sockets after 45s
+    });
 
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
     
@@ -16,9 +24,11 @@ const connectDB = async () => {
       console.log('⚠️  MongoDB disconnected');
     });
 
+    return conn;
+
   } catch (error) {
     console.error(`❌ Error connecting to MongoDB: ${error.message}`);
-    process.exit(1);
+    throw error; // Don't exit in serverless environment
   }
 };
 
