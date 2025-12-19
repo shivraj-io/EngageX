@@ -1,0 +1,120 @@
+.contact-list-page {
+  min-height: 100vh;
+  background-color: var(--bg-secondary);
+}
+
+.admin-main {
+  padding: var(--spacing-2xl) 0;
+}
+
+.admin-header {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.admin-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+.contacts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+.contact-card {
+  background-color: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.contact-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.contact-info {
+  flex: 1;
+}
+
+.contact-name {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-email {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.btn-icon {
+  padding: var(--spacing-sm);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: var(--font-size-xl);
+  transition: transform var(--transition-fast);
+}
+
+.btn-icon:hover {
+  transform: scale(1.1);
+}
+
+.contact-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.contact-subject {
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+}
+
+.contact-message {
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+}
+
+.contact-message p {
+  margin-top: var(--spacing-sm);
+  white-space: pre-wrap;
+}
+
+.contact-card-footer {
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.contact-date {
+  color: var(--text-light);
+  font-size: var(--font-size-sm);
+}
+
+.empty-message {
+  text-align: center;
+  font-size: var(--font-size-lg);
+  color: var(--text-secondary);
+  padding: var(--spacing-3xl) 0;
+  background-color: var(--bg-primary);
+  border-radius: var(--radius-lg);
+}
+
+@media (max-width: 768px) {
+  .contacts-grid {
+    grid-template-columns: 1fr;
+  }
+}

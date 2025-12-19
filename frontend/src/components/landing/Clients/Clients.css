@@ -1,0 +1,21 @@
+.clients {
+  padding: var(--spacing-3xl) 0;
+  background-color: var(--bg-primary);
+}
+
+.clients-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+@media (max-width: 768px) {
+  .clients {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .clients-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+}
