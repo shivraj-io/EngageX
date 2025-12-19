@@ -1,0 +1,11 @@
+node_modules
+.env
+.env.local
+.git
+.gitignore
+README.md
+seedData.js
+seedAdmin.js
+testLogin.js
+generateHash.js
+*.log
