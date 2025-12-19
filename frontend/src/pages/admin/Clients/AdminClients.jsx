@@ -6,23 +6,34 @@ import Loader from '../../../components/common/Loader/Loader';
 import './AdminClients.css';
 
 const AdminClients = () => {
-  const { data: clients, loading, error, refetch } = useFetch(getClients);
+  const { data: clientsData, loading, error, refetch } = useFetch(getClients);
+  const clients = clientsData?.data?.clients || clientsData?.clients || [];
   const [showModal, setShowModal] = useState(false);
   const [editingClient, setEditingClient] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
-    phone: '',
+    position: '',
     company: '',
-    industry: '',
+    testimonial: '',
+    rating: 5,
+    featured: false,
+    status: 'active',
   });
+  const [imageFile, setImageFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: type === 'checkbox' ? checked : value,
     });
+  };
+
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -30,15 +41,44 @@ const AdminClients = () => {
     setSubmitting(true);
 
     try {
+      const submitData = new FormData();
+      submitData.append('name', formData.name);
+      submitData.append('testimonial', formData.testimonial);
+      submitData.append('rating', formData.rating);
+      submitData.append('status', formData.status);
+      submitData.append('featured', formData.featured);
+      
+      if (formData.position) submitData.append('position', formData.position);
+      if (formData.company) submitData.append('company', formData.company);
+      
+      if (imageFile) {
+        submitData.append('image', imageFile);
+      }
+
+      console.log('Form Data being sent:');
+      for (let [key, value] of submitData.entries()) {
+        console.log(key, value);
+      }
+
       if (editingClient) {
-        await updateClient(editingClient._id, formData);
+        await updateClient(editingClient._id, submitData);
       } else {
-        await createClient(formData);
+        await createClient(submitData);
       }
       refetch();
       closeModal();
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to save client');
+      console.error('Error:', err);
+      console.error('Error response:', err.response);
+      console.error('Error data:', err.response?.data);
+      const errorMessage = err.response?.data?.message || err.response?.data?.error || 'Failed to save client';
+      const validationErrors = err.response?.data?.errors;
+      if (validationErrors) {
+        console.error('Validation errors:', validationErrors);
+        alert(errorMessage + '\n' + JSON.stringify(validationErrors, null, 2));
+      } else {
+        alert(errorMessage);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -48,11 +88,14 @@ const AdminClients = () => {
     setEditingClient(client);
     setFormData({
       name: client.name,
-      email: client.email,
-      phone: client.phone || '',
-      company: client.company,
-      industry: client.industry || '',
+      position: client.position || '',
+      company: client.company || '',
+      testimonial: client.testimonial,
+      rating: client.rating || 5,
+      featured: client.featured || false,
+      status: client.status || 'active',
     });
+    setImageFile(null);
     setShowModal(true);
   };
 
@@ -71,11 +114,14 @@ const AdminClients = () => {
     setEditingClient(null);
     setFormData({
       name: '',
-      email: '',
-      phone: '',
+      position: '',
       company: '',
-      industry: '',
+      testimonial: '',
+      rating: 5,
+      featured: false,
+      status: 'active',
     });
+    setImageFile(null);
     setShowModal(true);
   };
 
@@ -108,44 +154,35 @@ const AdminClients = () => {
           {error && <div className="alert alert-error">{error}</div>}
 
           {clients && clients.length > 0 ? (
-            <div className="table-container">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Company</th>
-                    <th>Industry</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {clients.map((client) => (
-                    <tr key={client._id}>
-                      <td>{client.name}</td>
-                      <td>{client.email}</td>
-                      <td>{client.company}</td>
-                      <td>{client.industry || 'N/A'}</td>
-                      <td>
-                        <div className="action-buttons">
-                          <button
-                            onClick={() => handleEdit(client)}
-                            className="btn-action btn-edit"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDelete(client._id)}
-                            className="btn-action btn-delete"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="cards-grid">
+              {clients.map((client) => (
+                <div key={client._id} className="client-card">
+                  <div className="card-image-client">
+                    <img src={client.imageUrl} alt={client.name} />
+                    {client.featured && <span className="featured-badge">⭐ Featured</span>}
+                    <span className={`status-badge-card status-${client.status}`}>
+                      {client.status}
+                    </span>
+                  </div>
+                  <div className="card-content">
+                    <h3 className="card-title">{client.name}</h3>
+                    <p className="card-position">{client.position || 'Client'}</p>
+                    {client.company && <p className="card-company">🏢 {client.company}</p>}
+                    <div className="card-rating">
+                      {'⭐'.repeat(client.rating || 5)}
+                    </div>
+                    <p className="card-testimonial">"{client.testimonial}"</p>
+                  </div>
+                  <div className="card-actions">
+                    <button onClick={() => handleEdit(client)} className="btn-card btn-edit">
+                      ✏️ Edit
+                    </button>
+                    <button onClick={() => handleDelete(client._id)} className="btn-card btn-delete">
+                      🗑️ Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
             <p className="empty-message">No clients found. Create your first client!</p>
@@ -175,42 +212,29 @@ const AdminClients = () => {
                   className="form-input"
                   value={formData.name}
                   onChange={handleChange}
+                  placeholder="Enter client name"
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="email" className="form-label">
-                  Email *
+                <label htmlFor="position" className="form-label">
+                  Position
                 </label>
                 <input
-                  type="email"
-                  id="email"
-                  name="email"
+                  type="text"
+                  id="position"
+                  name="position"
                   className="form-input"
-                  value={formData.email}
+                  value={formData.position}
                   onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="phone" className="form-label">
-                  Phone
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  className="form-input"
-                  value={formData.phone}
-                  onChange={handleChange}
+                  placeholder="e.g., CEO, CTO, Project Manager"
                 />
               </div>
 
               <div className="form-group">
                 <label htmlFor="company" className="form-label">
-                  Company *
+                  Company
                 </label>
                 <input
                   type="text"
@@ -219,22 +243,90 @@ const AdminClients = () => {
                   className="form-input"
                   value={formData.company}
                   onChange={handleChange}
-                  required
+                  placeholder="Company name"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="industry" className="form-label">
-                  Industry
+                <label htmlFor="testimonial" className="form-label">
+                  Testimonial *
+                </label>
+                <textarea
+                  id="testimonial"
+                  name="testimonial"
+                  className="form-textarea"
+                  value={formData.testimonial}
+                  onChange={handleChange}
+                  placeholder="Enter client testimonial"
+                  required
+                  rows="4"
+                ></textarea>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="image" className="form-label">
+                  Client Image {!editingClient && '*'}
                 </label>
                 <input
-                  type="text"
-                  id="industry"
-                  name="industry"
+                  type="file"
+                  id="image"
+                  name="image"
                   className="form-input"
-                  value={formData.industry}
-                  onChange={handleChange}
+                  onChange={handleImageChange}
+                  accept="image/*"
+                  required={!editingClient}
                 />
+                {editingClient && <small style={{ color: '#6b7280' }}>Leave empty to keep current image</small>}
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="rating" className="form-label">
+                  Rating *
+                </label>
+                <select
+                  id="rating"
+                  name="rating"
+                  className="form-select"
+                  value={formData.rating}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="1">⭐ 1 Star</option>
+                  <option value="2">⭐⭐ 2 Stars</option>
+                  <option value="3">⭐⭐⭐ 3 Stars</option>
+                  <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+                  <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="status" className="form-label">
+                  Status *
+                </label>
+                <select
+                  id="status"
+                  name="status"
+                  className="form-select"
+                  value={formData.status}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    name="featured"
+                    checked={formData.featured}
+                    onChange={handleChange}
+                    style={{ width: 'auto', cursor: 'pointer' }}
+                  />
+                  Featured Client
+                </label>
               </div>
 
               <div className="modal-actions">

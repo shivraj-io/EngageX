@@ -5,7 +5,8 @@ import Loader from '../../../components/common/Loader/Loader';
 import './ContactList.css';
 
 const ContactList = () => {
-  const { data: contacts, loading, error, refetch } = useFetch(getContacts);
+  const { data: contactsData, loading, error, refetch } = useFetch(getContacts);
+  const contacts = contactsData?.data?.contacts || contactsData?.contacts || [];
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this contact?')) {

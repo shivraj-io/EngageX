@@ -6,7 +6,8 @@ import Loader from '../../../components/common/Loader/Loader';
 import './AdminProjects.css';
 
 const AdminProjects = () => {
-  const { data: projects, loading, error, refetch } = useFetch(getProjects);
+  const { data: projectsData, loading, error, refetch } = useFetch(getProjects);
+  const projects = projectsData?.data?.projects || projectsData?.projects || [];
   const [showModal, setShowModal] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
   const [formData, setFormData] = useState({
@@ -61,6 +62,11 @@ const AdminProjects = () => {
         submitData.append('image', imageFile);
       }
 
+      console.log('Form Data being sent:');
+      for (let [key, value] of submitData.entries()) {
+        console.log(key, value);
+      }
+
       if (editingProject) {
         await updateProject(editingProject._id, submitData);
       } else {
@@ -70,7 +76,16 @@ const AdminProjects = () => {
       closeModal();
     } catch (err) {
       console.error('Error:', err);
-      alert(err.response?.data?.message || 'Failed to save project');
+      console.error('Error response:', err.response);
+      console.error('Error data:', err.response?.data);
+      const errorMessage = err.response?.data?.message || err.response?.data?.error || 'Failed to save project';
+      const validationErrors = err.response?.data?.errors;
+      if (validationErrors) {
+        console.error('Validation errors:', validationErrors);
+        alert(errorMessage + '\n' + JSON.stringify(validationErrors, null, 2));
+      } else {
+        alert(errorMessage);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -148,50 +163,48 @@ const AdminProjects = () => {
           {error && <div className="alert alert-error">{error}</div>}
 
           {projects && projects.length > 0 ? (
-            <div className="table-container">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Title</th>
-                    <th>Category</th>
-                    <th>Technologies</th>
-                    <th>Status</th>
-                    <th>Featured</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {projects.map((project) => (
-                    <tr key={project._id}>
-                      <td>{project.title}</td>
-                      <td>{project.category}</td>
-                      <td>{project.technologies?.join(', ')}</td>
-                      <td>
-                        <span className={`status-badge status-${project.status.toLowerCase()}`}>
-                          {project.status}
-                        </span>
-                      </td>
-                      <td>{project.featured ? '⭐' : '-'}</td>
-                      <td>
-                        <div className="action-buttons">
-                          <button
-                            onClick={() => handleEdit(project)}
-                            className="btn-action btn-edit"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDelete(project._id)}
-                            className="btn-action btn-delete"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="cards-grid">
+              {projects.map((project) => (
+                <div key={project._id} className="project-card">
+                  <div className="card-image">
+                    <img src={project.imageUrl} alt={project.title} />
+                    {project.featured && <span className="featured-badge">⭐ Featured</span>}
+                    <span className={`status-badge-card status-${project.status.toLowerCase()}`}>
+                      {project.status}
+                    </span>
+                  </div>
+                  <div className="card-content">
+                    <h3 className="card-title">{project.title}</h3>
+                    <p className="card-category">{project.category}</p>
+                    <p className="card-description">{project.description}</p>
+                    <div className="card-technologies">
+                      {project.technologies?.map((tech, index) => (
+                        <span key={index} className="tech-tag">{tech}</span>
+                      ))}
+                    </div>
+                    <div className="card-links">
+                      {project.liveUrl && (
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="card-link">
+                          🔗 Live
+                        </a>
+                      )}
+                      {project.githubUrl && (
+                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="card-link">
+                          💻 GitHub
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                  <div className="card-actions">
+                    <button onClick={() => handleEdit(project)} className="btn-card btn-edit">
+                      ✏️ Edit
+                    </button>
+                    <button onClick={() => handleDelete(project._id)} className="btn-card btn-delete">
+                      🗑️ Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
             <p className="empty-message">No projects found. Create your first project!</p>

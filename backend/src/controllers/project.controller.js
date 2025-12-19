@@ -95,16 +95,28 @@ const createProject = asyncHandler(async (req, res) => {
     folder: '/engagex/projects'
   });
 
-  // Parse technologies if it's a string
-  let technologies = req.body.technologies;
+  // Parse technologies - handle both array and string formats
+  let technologies = req.body.technologies || req.body['technologies[]'];
   if (typeof technologies === 'string') {
-    technologies = JSON.parse(technologies);
+    try {
+      technologies = JSON.parse(technologies);
+    } catch {
+      technologies = [technologies];
+    }
+  } else if (!Array.isArray(technologies)) {
+    technologies = [];
   }
 
   // Create project
   const project = await Project.create({
-    ...req.body,
+    title: req.body.title,
+    description: req.body.description,
+    category: req.body.category || 'General',
     technologies,
+    liveUrl: req.body.liveUrl,
+    githubUrl: req.body.githubUrl,
+    featured: req.body.featured === 'true' || req.body.featured === true,
+    status: req.body.status || 'active',
     imageUrl: uploadResponse.url,
     imageId: uploadResponse.fileId
   });
@@ -144,11 +156,31 @@ const updateProject = asyncHandler(async (req, res) => {
     );
   }
 
-  const updateData = { ...req.body };
+  const updateData = {};
 
-  // Parse technologies if it's a string
-  if (updateData.technologies && typeof updateData.technologies === 'string') {
-    updateData.technologies = JSON.parse(updateData.technologies);
+  // Only include fields that are provided
+  if (req.body.title) updateData.title = req.body.title;
+  if (req.body.description) updateData.description = req.body.description;
+  if (req.body.category) updateData.category = req.body.category;
+  if (req.body.liveUrl !== undefined) updateData.liveUrl = req.body.liveUrl;
+  if (req.body.githubUrl !== undefined) updateData.githubUrl = req.body.githubUrl;
+  if (req.body.status) updateData.status = req.body.status;
+  if (req.body.featured !== undefined) {
+    updateData.featured = req.body.featured === 'true' || req.body.featured === true;
+  }
+
+  // Parse technologies - handle both array and string formats
+  let technologies = req.body.technologies || req.body['technologies[]'];
+  if (technologies) {
+    if (typeof technologies === 'string') {
+      try {
+        updateData.technologies = JSON.parse(technologies);
+      } catch {
+        updateData.technologies = [technologies];
+      }
+    } else if (Array.isArray(technologies)) {
+      updateData.technologies = technologies;
+    }
   }
 
   // If new image is uploaded, delete old one and upload new
