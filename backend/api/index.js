@@ -2,47 +2,46 @@ const app = require('../src/app');
 const connectDB = require('../src/config/db');
 
 // MongoDB connection state
-let isConnected = false;
+let cachedConnection = null;
 
 // Connect to MongoDB with caching for serverless
 async function connectToDatabase() {
-  if (isConnected) {
-    return;
+  if (cachedConnection) {
+    console.log('=> Using cached database connection');
+    return cachedConnection;
   }
   
-  try {
-    await connectDB();
-    isConnected = true;
-  } catch (error) {
-    console.error('Database connection failed:', error);
-    isConnected = false;
-  }
+  console.log('=> Connecting to database...');
+  cachedConnection = await connectDB();
+  return cachedConnection;
 }
 
 // Serverless function handler
 module.exports = async (req, res) => {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', process.env.FRONTEND_URL || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS,PATCH');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Authorization');
-
-  // Handle preflight
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
   try {
+    // Set CORS headers
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Origin', process.env.FRONTEND_URL || '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS,PATCH');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Authorization');
+
+    // Handle preflight
+    if (req.method === 'OPTIONS') {
+      res.status(200).end();
+      return;
+    }
+
     // Connect to database
     await connectToDatabase();
     
-    // Handle the request with Express app
-    return app(req, res);
+    // Pass request to Express app
+    app(req, res);
   } catch (error) {
-    console.error('Handler error:', error);
-    return res.status(500).json({
+    console.error('=> Serverless function error:', error);
+    res.status(500).json({
       success: false,
-      message: 'Internal server error'
+      message: 'Internal server error',
+      error: error.message
     });
   }
 };
