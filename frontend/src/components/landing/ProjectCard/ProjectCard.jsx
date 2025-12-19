@@ -3,30 +3,53 @@ import './ProjectCard.css';
 const ProjectCard = ({ project }) => {
   return (
     <article className="project-card">
-      <div className="project-card-header">
-        <h3 className="project-card-title">{project.title}</h3>
-        <span className={`project-card-status status-${project.status.toLowerCase()}`}>
-          {project.status}
-        </span>
-      </div>
-      <p className="project-card-description">{project.description}</p>
-      <div className="project-card-meta">
-        <div className="project-card-meta-item">
-          <span className="meta-label">Client:</span>
-          <span className="meta-value">{project.client}</span>
+      {project.imageUrl && (
+        <div className="project-card-image">
+          <img src={project.imageUrl} alt={project.title} />
+          {project.featured && <span className="featured-badge">Featured</span>}
         </div>
-        <div className="project-card-meta-item">
-          <span className="meta-label">Technology:</span>
-          <span className="meta-value">{project.technology}</span>
+      )}
+      
+      <div className="project-card-content">
+        <div className="project-card-header">
+          <h3 className="project-card-title">{project.title}</h3>
+          {project.category && (
+            <span className="project-category">{project.category}</span>
+          )}
         </div>
-        {project.completionDate && (
-          <div className="project-card-meta-item">
-            <span className="meta-label">Completed:</span>
-            <span className="meta-value">
-              {new Date(project.completionDate).toLocaleDateString()}
-            </span>
+        
+        <p className="project-card-description">{project.description}</p>
+        
+        {project.technologies && project.technologies.length > 0 && (
+          <div className="project-technologies">
+            {project.technologies.map((tech, index) => (
+              <span key={index} className="tech-badge">{tech}</span>
+            ))}
           </div>
         )}
+        
+        <div className="project-card-links">
+          {project.liveUrl && (
+            <a 
+              href={project.liveUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="project-link"
+            >
+              🔗 Live Demo
+            </a>
+          )}
+          {project.githubUrl && (
+            <a 
+              href={project.githubUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="project-link"
+            >
+              💻 GitHub
+            </a>
+          )}
+        </div>
       </div>
     </article>
   );

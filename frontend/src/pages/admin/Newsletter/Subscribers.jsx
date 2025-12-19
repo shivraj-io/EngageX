@@ -5,7 +5,8 @@ import Loader from '../../../components/common/Loader/Loader';
 import './Subscribers.css';
 
 const Subscribers = () => {
-  const { data: subscribers, loading, error, refetch } = useFetch(getSubscribers);
+  const { data: subscribersData, loading, error, refetch } = useFetch(getSubscribers);
+  const subscribers = subscribersData?.data?.subscribers || subscribersData?.subscribers || [];
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this subscriber?')) {
@@ -50,35 +51,38 @@ const Subscribers = () => {
           {error && <div className="alert alert-error">{error}</div>}
 
           {subscribers && subscribers.length > 0 ? (
-            <div className="table-container">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Email</th>
-                    <th>Subscribed On</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {subscribers.map((subscriber) => (
-                    <tr key={subscriber._id}>
-                      <td>{subscriber.email}</td>
-                      <td>{formatDate(subscriber.createdAt)}</td>
-                      <td>
-                        <button
-                          onClick={() => handleDelete(subscriber._id)}
-                          className="btn-action btn-delete"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="subscribers-grid">
+              {subscribers.map((subscriber) => (
+                <div key={subscriber._id} className="subscriber-card">
+                  <div className="subscriber-icon">📧</div>
+                  <div className="subscriber-info">
+                    <div className="subscriber-email">{subscriber.email}</div>
+                    <div className="subscriber-date">
+                      <span className="date-icon">📅</span>
+                      {formatDate(subscriber.createdAt)}
+                    </div>
+                    {subscriber.status && (
+                      <span className={`status-badge-sub status-${subscriber.status}`}>
+                        {subscriber.status}
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => handleDelete(subscriber._id)}
+                    className="btn-delete-sub"
+                    title="Unsubscribe"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              ))}
             </div>
           ) : (
-            <p className="empty-message">No subscribers yet.</p>
+            <div className="empty-state">
+              {/* <div className="empty-icon">📭</div> */}
+              <p className="empty-message">No subscribers yet.</p>
+              <p className="empty-subtitle">Start promoting your newsletter to get subscribers!</p>
+            </div>
           )}
         </div>
       </main>

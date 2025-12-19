@@ -2,92 +2,148 @@
   background-color: var(--bg-primary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  text-align: center;
+  padding: 1.75rem;
   transition: all var(--transition-base);
+  position: relative;
 }
 
 .client-card:hover {
   border-color: var(--primary-light);
   box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
-.client-logo {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 1rem;
+.client-card-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: var(--bg-secondary);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
 }
 
-.client-logo img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+.client-avatar-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
 }
 
-.client-logo-placeholder {
-  width: 64px;
-  height: 64px;
+.client-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
-  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-size: 1.5rem;
   font-weight: 700;
+  flex-shrink: 0;
+}
+
+.client-info {
+  flex: 1;
+  text-align: left;
 }
 
 .client-name {
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 0.25rem;
+  margin: 0 0 0.25rem 0;
 }
 
-.client-industry {
+.client-position {
   font-size: 0.875rem;
   color: var(--text-secondary);
-  margin-bottom: 0.75rem;
+  margin: 0;
 }
 
-.client-description {
-  font-size: 0.875rem;
+.client-testimonial {
+  font-size: 0.9375rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.7;
+  font-style: italic;
+  margin: 0 0 1rem 0;
+  padding: 0 0.5rem;
+  border-left: 3px solid var(--primary-color);
+}
+
+.client-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.rating-stars {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.rating-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.featured-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.25rem 0.625rem;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: var(--radius-full);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 @media (max-width: 768px) {
   .client-card {
-    padding: 1.125rem;
+    padding: 1.25rem;
   }
 
-  .client-logo,
-  .client-logo-placeholder {
-    width: 56px;
-    height: 56px;
-    margin-bottom: 0.875rem;
+  .client-card-header {
+    gap: 0.875rem;
+    margin-bottom: 1rem;
   }
 
-  .client-logo-placeholder {
+  .client-avatar-img,
+  .client-avatar {
+    width: 50px;
+    height: 50px;
     font-size: 1.25rem;
   }
 
   .client-name {
+    font-size: 1rem;
+  }
+
+  .client-position {
+    font-size: 0.8125rem;
+  }
+
+  .client-testimonial {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-bottom: 0.875rem;
+  }
+
+  .rating-stars {
     font-size: 0.9375rem;
   }
 
-  .client-industry {
-    font-size: 0.8rem;
-    margin-bottom: 0.5rem;
+  .rating-value {
+    font-size: 0.8125rem;
   }
 
-  .client-description {
-    font-size: 0.8rem;
+  .featured-badge {
+    font-size: 0.625rem;
+    padding: 0.2rem 0.5rem;
   }
 }

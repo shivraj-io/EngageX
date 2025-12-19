@@ -5,7 +5,11 @@ import Loader from '../../common/Loader/Loader';
 import './Clients.css';
 
 const Clients = () => {
-  const { data: clients, loading, error } = useFetch(getClients);
+  const { data: clientsData, loading, error } = useFetch(getClients);
+
+  console.log('Clients Data:', clientsData);
+  console.log('Clients Loading:', loading);
+  console.log('Clients Error:', error);
 
   if (loading) {
     return <Loader />;
@@ -21,6 +25,15 @@ const Clients = () => {
     );
   }
 
+  // Extract clients array from response - backend returns data in data.clients
+  const clientsArray = clientsData?.data?.clients || clientsData?.clients || [];
+  // Ensure it's an array before filtering
+  const clients = Array.isArray(clientsArray) ? clientsArray : [];
+  // Filter only active clients for public display
+  const activeClients = clients.filter(c => c.status === 'active');
+
+  console.log('Active Clients:', activeClients);
+
   return (
     <section className="clients" id="clients">
       <div className="container">
@@ -31,9 +44,9 @@ const Clients = () => {
           </p>
         </div>
 
-        {clients && clients.length > 0 ? (
+        {activeClients && activeClients.length > 0 ? (
           <div className="clients-grid">
-            {clients.map((client) => (
+            {activeClients.map((client) => (
               <ClientCard key={client._id} client={client} />
             ))}
           </div>

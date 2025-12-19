@@ -5,7 +5,11 @@ import Loader from '../../common/Loader/Loader';
 import './Projects.css';
 
 const Projects = () => {
-  const { data: projects, loading, error } = useFetch(getProjects);
+  const { data: projectsData, loading, error } = useFetch(getProjects);
+
+  console.log('Projects Data:', projectsData);
+  console.log('Projects Loading:', loading);
+  console.log('Projects Error:', error);
 
   if (loading) {
     return <Loader />;
@@ -21,6 +25,15 @@ const Projects = () => {
     );
   }
 
+  // Extract projects array from response - backend returns data in data.projects
+  const projectsArray = projectsData?.data?.projects || projectsData?.projects || [];
+  // Ensure it's an array before filtering
+  const projects = Array.isArray(projectsArray) ? projectsArray : [];
+  // Filter only active projects for public display
+  const activeProjects = projects.filter(p => p.status === 'active');
+
+  console.log('Active Projects:', activeProjects);
+
   return (
     <section className="projects" id="projects">
       <div className="container">
@@ -31,9 +44,9 @@ const Projects = () => {
           </p>
         </div>
 
-        {projects && projects.length > 0 ? (
+        {activeProjects && activeProjects.length > 0 ? (
           <div className="projects-grid">
-            {projects.map((project) => (
+            {activeProjects.map((project) => (
               <ProjectCard key={project._id} project={project} />
             ))}
           </div>
